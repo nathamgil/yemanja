@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel do restaurante · Yemanjá</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0B1D3D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/estilo.css?v=20261112182654">
+</head>
+<body class="adm">
+
+<main id="tela-login" class="login">
+  <form class="login-caixa" id="form-login" novalidate>
+    <h1>Painel do Yemanjá</h1>
+    <p>Reservas, cardápio e a agenda do Centro de Convenções, no celular.</p>
+    <div class="credencial" role="note"><b>Acesso de demonstração</b>Usuário: <code>gerente</code> · Senha: <code>yemanja</code></div>
+    <div class="campo"><label for="l-user" style="font-weight:700">Usuário</label><input type="text" id="l-user" autocomplete="username" autocapitalize="none"></div>
+    <div class="campo" style="margin-top:12px"><label for="l-senha" style="font-weight:700">Senha</label><input type="password" id="l-senha" autocomplete="current-password"></div>
+    <button class="bt bt-cheio bt-largo" type="submit" style="margin-top:18px">Entrar</button>
+    <div id="login-erro" aria-live="polite"></div>
+    <p style="margin-top:16px;font-size:16px"><a href="index.html">Voltar para o site</a></p>
+  </form>
+</main>
+
+<div id="tela-painel" hidden>
+  <header class="adm-topo"><div class="embrulho"><b>Yemanjá · painel</b><span><a href="index.html" target="_blank">Ver site</a> &nbsp; <button id="sair" type="button">Sair</button></span></div></header>
+  <nav class="adm-abas" role="tablist" aria-label="Seções do painel">
+    <button role="tab" data-aba="reservas" aria-selected="true">Reservas</button>
+    <button role="tab" data-aba="cardapio" aria-selected="false">Cardápio</button>
+    <button role="tab" data-aba="eventos" aria-selected="false">Agenda de eventos</button>
+    <button role="tab" data-aba="ajustes" aria-selected="false">Ajustes</button>
+  </nav>
+  <main class="adm-corpo"><div class="embrulho" id="corpo"></div></main>
+</div>
+
+<script src="assets/dados.js?v=20261112182654"></script>
+<script src="assets/admin.js?v=20261112182654"></script>
+</body>
+</html>

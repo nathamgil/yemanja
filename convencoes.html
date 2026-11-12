@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vai a um evento no Centro de Convenções? · Restaurante Yemanjá</title>
+<meta name="description" content="O Restaurante Yemanjá fica pertinho do Centro de Convenções de Salvador. Agenda de eventos do mês, como chegar, estacionamento na frente e reserva para grupos.">
+<meta name="theme-color" content="#0B1D3D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/estilo.css?v=20261112182654">
+</head>
+<body data-pagina="convencoes" data-tipo-reserva="evento">
+<div id="topo"></div>
+<main id="conteudo">
+  <section class="conv" style="padding-top:64px">
+    <div class="embrulho">
+      <div class="surge">
+        <p class="kicker">Centro de Convenções de Salvador</p>
+        <h1 style="font-size:clamp(40px,6vw,72px)"><span id="mes">Mês</span> de congressos. E o seu almoço tem <em>encontro marcado</em>.</h1>
+        <p>O Yemanjá fica pertinho do Centro de Convenções. Quem vem a Salvador para acompanhar os eventos do mês encontra aqui uma pausa de verdade: comida baiana, mesa posta e estacionamento na frente.</p>
+        <p><a class="bt bt-claro" href="#reservar">Reservar para o grupo</a></p>
+      </div>
+      <div class="cracha surge">
+        <span class="tarja">VISITANTE</span>
+        <h3>Agenda do Centro de Convenções</h3>
+        <div class="agenda-grande" style="border:0;padding:0">
+          <ul class="agenda" id="agenda-toda"></ul>
+        </div>
+        <p class="aviso" style="margin:12px 0 0">Agenda atualizada pelo restaurante. Confira datas e horários com a organização de cada evento.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="embrulho">
+    <div class="chegar">
+      <div class="surge">
+        <p class="kicker">Como chegar</p>
+        <h2>Do evento à mesa</h2>
+        <ol class="passos">
+          <li>Saindo do Centro de Convenções, siga para <b>Armação</b>. O restaurante fica pertinho.</li>
+          <li>Chegando de carro, use o <b>estacionamento na frente</b> do restaurante.</li>
+          <li>Grupo grande? Reserve antes: a mesa fica pronta e o almoço cabe no intervalo.</li>
+        </ol>
+        <p style="display:flex;flex-wrap:wrap;gap:10px">
+          <a class="bt bt-cheio" id="rota" href="#" target="_blank" rel="noopener">Rota a partir do Centro de Convenções</a>
+          <a class="bt" id="mapa" href="#" target="_blank" rel="noopener">Abrir no mapa</a>
+        </p>
+        <p class="aviso">Endereço completo: a confirmar com o restaurante. O mapa abre a busca pelo Restaurante Yemanjá em Armação.</p>
+      </div>
+      <figure class="surge">
+        <img src="fotos/estacionamento.jpg" alt="Estacionamento em frente ao Restaurante Yemanjá, visto do alto, com carros parados" loading="lazy">
+        <figcaption>Estacionamento na frente do restaurante.</figcaption>
+      </figure>
+    </div>
+    <figure class="surge" style="margin:0 0 72px">
+      <img src="fotos/fachada.jpg" alt="Fachada azul do Restaurante Yemanjá com o nome em letras grandes" style="width:100%;aspect-ratio:2/1;object-fit:cover;border-radius:4px" loading="lazy">
+    </figure>
+  </section>
+
+  <section class="reserva" id="reservar" style="background:var(--linho-2)">
+    <div class="embrulho">
+      <div class="lado surge">
+        <p class="kicker">Reserva de grupo</p>
+        <h2>Diga o evento e quantos <em>vêm</em>.</h2>
+        <p>Escolha o congresso na lista, o dia e o horário do intervalo. A mensagem chega pronta no WhatsApp do restaurante.</p>
+        <a class="fone" href="https://wa.me/5571996985181" target="_blank" rel="noopener">(71) 99698-5181</a>
+        <p>Speaking English or Spanish? <a href="visitantes.html">Visitor page</a> · <a href="visitantes.html?lang=es">Página para visitantes</a></p>
+      </div>
+      <div id="form-reserva" class="surge"></div>
+    </div>
+  </section>
+</main>
+<footer id="rodape"></footer>
+<script src="assets/dados.js?v=20261112182654"></script>
+<script src="assets/site.js?v=20261112182654"></script>
+<script>
+  document.getElementById('rota').href = YJ.linkRota('Centro de Convenções Salvador, BA');
+  document.getElementById('mapa').href = YJ.linkMapa();
+  var m = YJ.MESES[new Date().getMonth()]; document.getElementById('mes').textContent = m.charAt(0).toUpperCase() + m.slice(1);
+</script>
+</body>
+</html>

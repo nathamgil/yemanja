@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Restaurante Yemanjá · Bahian seafood in Salvador · Comida bahiana</title>
+<meta name="description" content="Restaurante Yemanjá: 52 years of Bahian seafood in Armação, Salvador, close to the Convention Center. Reservations on WhatsApp. / 52 años de cocina bahiana en Salvador.">
+<meta name="theme-color" content="#0B1D3D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/estilo.css?v=20261112182654">
+</head>
+<body data-pagina="visitantes">
+<div id="topo"></div>
+<main id="conteudo">
+  <section class="capa">
+    <div class="embrulho">
+      <div>
+        <div class="idiomas" role="group" aria-label="Language / Idioma">
+          <button type="button" data-lang="en" aria-pressed="true">English</button>
+          <button type="button" data-lang="es" aria-pressed="false">Español</button>
+        </div>
+        <p class="kicker" data-t="kicker"></p>
+        <h1 data-t="titulo"></h1>
+        <p class="lead" data-t="lead"></p>
+        <div class="acoes"><a class="bt bt-cheio" href="#reservar" data-t="btReservar"></a><a class="bt" href="index.html" lang="pt-BR">Versão em português</a></div>
+      </div>
+      <div class="arcos">
+        <div class="arco grande"><img src="fotos/salao-janelas.jpg" alt=""></div>
+        <div class="prato"><img src="fotos/moranga.jpg" alt=""></div>
+        <div class="selo52"><span><b>52</b><span data-t="anos"></span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="embrulho" style="padding:48px 0">
+    <div data-onda="14"></div>
+    <div class="chegar" style="padding-bottom:24px">
+      <div>
+        <h2 data-t="praticoT"></h2>
+        <ol class="passos">
+          <li data-t="p1"></li>
+          <li data-t="p2"></li>
+          <li data-t="p3"></li>
+          <li data-t="p4"></li>
+        </ol>
+        <p><a class="bt" id="rota" href="#" target="_blank" rel="noopener" data-t="btRota"></a></p>
+      </div>
+      <div>
+        <h2 data-t="pratosT"></h2>
+        <div class="glossario" id="glossario" style="grid-template-columns:minmax(0,1fr)"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reserva" id="reservar" style="background:var(--linho-2)">
+    <div class="embrulho">
+      <div class="lado">
+        <h2 data-t="reservaT"></h2>
+        <p data-t="reservaP"></p>
+        <a class="fone" href="https://wa.me/5571996985181" target="_blank" rel="noopener">+55 71 99698-5181</a>
+      </div>
+      <form class="comanda" id="f-vis" novalidate>
+        <div class="campos">
+          <div class="campo"><label for="v-data" data-t="lData"></label><input type="date" id="v-data" required></div>
+          <div class="campo"><label for="v-hora" data-t="lHora"></label><select id="v-hora"></select></div>
+          <div class="campo"><label for="v-pessoas" data-t="lPessoas"></label><input type="number" id="v-pessoas" min="1" value="2" inputmode="numeric"></div>
+          <div class="campo"><label for="v-nome" data-t="lNome"></label><input type="text" id="v-nome" autocomplete="name"></div>
+        </div>
+        <button class="bt bt-cheio bt-largo" type="submit" data-t="btEnviar"></button>
+        <p class="aviso" style="margin:12px 0 0" data-t="aviso"></p>
+        <div id="v-saida" aria-live="polite"></div>
+      </form>
+    </div>
+  </section>
+</main>
+<footer id="rodape"></footer>
+<script src="assets/dados.js?v=20261112182654"></script>
+<script src="assets/site.js?v=20261112182654"></script>
+<script>
+(function () {
+  var T = {
+    en: {
+      kicker: 'Armação · Salvador · Bahia, Brazil',
+      titulo: 'Bahian seafood, served for <em>52 years</em>.',
+      lead: 'Restaurante Yemanjá has been serving the food of Bahia for over five decades, to families, friends and visitors from everywhere. Close to the Salvador Convention Center.',
+      btReservar: 'Book a table', anos: 'years',
+      praticoT: 'Good to know',
+      p1: 'Open every day, <b>11:30 am to 5 pm</b> (lunch).',
+      p2: 'Close to the <b>Salvador Convention Center</b>, in Armação.',
+      p3: '<b>Parking</b> right in front of the restaurant.',
+      p4: 'Coming with a conference group? Book ahead so the table is ready.',
+      btRota: 'Directions from the Convention Center',
+      pratosT: 'What to order',
+      g: [['Abará with vatapá and shrimp', 'Black-eyed pea dumpling steamed in banana leaf, with vatapá (a creamy shrimp, peanut and coconut paste) and dried shrimp.'],
+          ['Moqueca', 'Bahian seafood stew with coconut milk and dendê (palm oil), served in a clay pot.'],
+          ['Casquinha de siri', 'Crab meat served in the shell, with fine farofa and pepper.'],
+          ['Camarão na moranga', 'Creamy shrimp served inside a pumpkin.']],
+      reservaT: 'Book on WhatsApp', reservaP: 'Fill in the form and a ready-made message in English opens on the restaurant’s WhatsApp.',
+      lData: 'Date', lHora: 'Time', lPessoas: 'People', lNome: 'Your name', btEnviar: 'Send on WhatsApp',
+      aviso: 'Your booking is confirmed when the restaurant replies.',
+      erro: 'Please write your name.', ok: 'Request saved. If WhatsApp did not open, <a href="{l}" target="_blank" rel="noopener">tap here</a>.',
+      msg: 'Hello! I would like to book a table at Restaurante Yemanjá.\nDate: {d}\nTime: {h}\nPeople: {p}\nName: {n}'
+    },
+    es: {
+      kicker: 'Armação · Salvador · Bahía, Brasil',
+      titulo: 'Cocina bahiana del mar, hace <em>52 años</em>.',
+      lead: 'El Restaurante Yemanjá sirve la cocina de Bahía hace más de cinco décadas, a familias, amigos y visitantes de todas partes. Cerca del Centro de Convenciones de Salvador.',
+      btReservar: 'Reservar mesa', anos: 'años',
+      praticoT: 'Información útil',
+      p1: 'Abierto todos los días, de <b>11:30 a 17:00</b> (almuerzo).',
+      p2: 'Cerca del <b>Centro de Convenciones de Salvador</b>, en Armação.',
+      p3: '<b>Estacionamiento</b> frente al restaurante.',
+      p4: '¿Viene con un grupo del congreso? Reserve antes y la mesa estará lista.',
+      btRota: 'Cómo llegar desde el Centro de Convenciones',
+      pratosT: 'Qué pedir',
+      g: [['Abará con vatapá y camarones', 'Bollito de frijol carita cocido en hoja de plátano, con vatapá (crema de camarón, maní y coco) y camarones secos.'],
+          ['Moqueca', 'Guiso bahiano de mariscos con leche de coco y aceite de dendê, servido en olla de barro.'],
+          ['Casquinha de siri', 'Carne de cangrejo servida en la concha, con farofa fina y pimienta.'],
+          ['Camarão na moranga', 'Camarones cremosos servidos dentro de una calabaza.']],
+      reservaT: 'Reserve por WhatsApp', reservaP: 'Complete el formulario y se abre un mensaje en español listo para el WhatsApp del restaurante.',
+      lData: 'Fecha', lHora: 'Hora', lPessoas: 'Personas', lNome: 'Su nombre', btEnviar: 'Enviar por WhatsApp',
+      aviso: 'La reserva queda confirmada cuando el restaurante responde.',
+      erro: 'Escriba su nombre, por favor.', ok: 'Pedido guardado. Si WhatsApp no se abrió, <a href="{l}" target="_blank" rel="noopener">toque aquí</a>.',
+      msg: '¡Hola! Quisiera reservar una mesa en el Restaurante Yemanjá.\nFecha: {d}\nHora: {h}\nPersonas: {p}\nNombre: {n}'
+    }
+  };
+  var lang = new URLSearchParams(location.search).get('lang') === 'es' ? 'es' : 'en';
+  var hs = []; for (var m = 690; m <= 960; m += 30) hs.push(String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0'));
+  document.getElementById('v-hora').innerHTML = hs.map(function (h) { return '<option' + (h === '12:30' ? ' selected' : '') + '>' + h + '</option>'; }).join('');
+  var dt = document.getElementById('v-data'); dt.min = dt.value = YJ.hoje();
+  document.getElementById('rota').href = YJ.linkRota('Centro de Convenções Salvador, BA');
+
+  function aplica(l) {
+    lang = l; var t = T[l];
+    document.documentElement.lang = l;
+    document.querySelectorAll('[data-t]').forEach(function (el) { el.innerHTML = t[el.getAttribute('data-t')]; });
+    document.querySelectorAll('[data-lang]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-lang') === l); });
+    document.getElementById('glossario').innerHTML = t.g.map(function (x) { return '<div><b>' + x[0] + '</b>' + x[1] + '</div>'; }).join('');
+    history.replaceState(null, '', l === 'es' ? '?lang=es' : location.pathname);
+  }
+  document.querySelectorAll('[data-lang]').forEach(function (b) { b.addEventListener('click', function () { aplica(b.getAttribute('data-lang')); }); });
+  aplica(lang);
+
+  document.getElementById('f-vis').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var t = T[lang], nome = document.getElementById('v-nome').value.trim(), out = document.getElementById('v-saida');
+    if (!nome) { out.innerHTML = '<p class="erro">' + t.erro + '</p>'; return; }
+    var r = { tipo: 'mesa', data: dt.value || YJ.hoje(), hora: document.getElementById('v-hora').value, pessoas: +document.getElementById('v-pessoas').value || 1, nome: nome, tel: '', evento: '', idioma: lang, obs: 'Veio pela página de visitantes (' + (lang === 'es' ? 'espanhol' : 'inglês') + ').' };
+    YJ.addReserva(r);
+    var link = YJ.linkWa(t.msg.replace('{d}', r.data.split('-').reverse().join('/')).replace('{h}', r.hora).replace('{p}', r.pessoas).replace('{n}', r.nome));
+    out.innerHTML = '<div class="ok">' + t.ok.replace('{l}', link) + '</div>';
+    window.open(link, '_blank', 'noopener');
+  });
+})();
+</script>
+</body>
+</html>
