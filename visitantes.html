@@ -9,27 +9,23 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/estilo.css?v=20261112182654">
+<link rel="stylesheet" href="assets/estilo.css?v=20261112192858">
 </head>
 <body data-pagina="visitantes">
 <div id="topo"></div>
 <main id="conteudo">
-  <section class="capa">
-    <div class="embrulho">
-      <div>
+  <section class="vis-capa">
+    <img class="vis-foto" src="fotos/salao-janelas.jpg" alt="Restaurante Yemanjá dining room, tables set with blue tablecloths / Salón del Restaurante Yemanjá">
+    <div class="vis-agua">
+      <div class="crista" data-crista="estatica" aria-hidden="true"></div>
+      <div class="embrulho">
         <div class="idiomas" role="group" aria-label="Language / Idioma">
           <button type="button" data-lang="en" aria-pressed="true">English</button>
           <button type="button" data-lang="es" aria-pressed="false">Español</button>
         </div>
-        <p class="kicker" data-t="kicker"></p>
         <h1 data-t="titulo"></h1>
         <p class="lead" data-t="lead"></p>
-        <div class="acoes"><a class="bt bt-cheio" href="#reservar" data-t="btReservar"></a><a class="bt" href="index.html" lang="pt-BR">Versão em português</a></div>
-      </div>
-      <div class="arcos">
-        <div class="arco grande"><img src="fotos/salao-janelas.jpg" alt=""></div>
-        <div class="prato"><img src="fotos/moranga.jpg" alt=""></div>
-        <div class="selo52"><span><b>52</b><span data-t="anos"></span></span></div>
+        <div class="acoes"><a class="bt bt-branco" href="#reservar" data-t="btReservar"></a><a class="bt bt-claro" href="index.html" lang="pt-BR">Versão em português</a></div>
       </div>
     </div>
   </section>
@@ -76,13 +72,12 @@
   </section>
 </main>
 <footer id="rodape"></footer>
-<script src="assets/dados.js?v=20261112182654"></script>
-<script src="assets/site.js?v=20261112182654"></script>
+<script src="assets/dados.js?v=20261112192858"></script>
+<script src="assets/site.js?v=20261112192858"></script>
 <script>
 (function () {
   var T = {
     en: {
-      kicker: 'Armação · Salvador · Bahia, Brazil',
       titulo: 'Bahian seafood, served for <em>52 years</em>.',
       lead: 'Restaurante Yemanjá has been serving the food of Bahia for over five decades, to families, friends and visitors from everywhere. Close to the Salvador Convention Center.',
       btReservar: 'Book a table', anos: 'years',
@@ -104,7 +99,6 @@
       msg: 'Hello! I would like to book a table at Restaurante Yemanjá.\nDate: {d}\nTime: {h}\nPeople: {p}\nName: {n}'
     },
     es: {
-      kicker: 'Armação · Salvador · Bahía, Brasil',
       titulo: 'Cocina bahiana del mar, hace <em>52 años</em>.',
       lead: 'El Restaurante Yemanjá sirve la cocina de Bahía hace más de cinco décadas, a familias, amigos y visitantes de todas partes. Cerca del Centro de Convenciones de Salvador.',
       btReservar: 'Reservar mesa', anos: 'años',

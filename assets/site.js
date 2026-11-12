@@ -1,4 +1,4 @@
-/* Restaurante Yemanjá — comportamento do site (topo, rodapé, reserva, cardápio, agenda, rolagem). */
+/* Restaurante Yemanjá — comportamento do site (topo, rodapé, reserva, cardápio, agenda e as cenas de rolagem: maré, mesa posta, crachá). */
 (function () {
   'use strict';
   var C = YJ.CASA, esc = YJ.esc;
@@ -102,15 +102,40 @@
     }).join('') : '<li><span class="vazio">A agenda do mês sai no Instagram @' + C.instagram + '.</span></li>';
   }
 
-  /* ---------------- pratos da home ---------------- */
-  function pratosHome(el) {
-    if (!el) return;
-    var lista = YJ.cardapio().filter(function (i) { return i.destaque && i.foto; });
+  /* ---------------- crista de onda cheia (a água das cenas) ---------------- */
+  // n ondas num SVG com o dobro da largura: a crista anda meia largura e repete sem emenda.
+  function crista(n) {
+    var w = 2880, alt = 70, passo = w / n, base = 40, d = 'M0 ' + base;
+    for (var i = 0; i < n; i++) { var x = i * passo; d += ' Q' + (x + passo / 4) + ' ' + (base - 26) + ' ' + (x + passo / 2) + ' ' + base + ' T' + (x + passo) + ' ' + base; }
+    d += ' L' + w + ' ' + alt + ' L0 ' + alt + ' Z';
+    return '<svg viewBox="0 0 ' + w + ' ' + alt + '" preserveAspectRatio="none" aria-hidden="true"><path d="' + d + '"/></svg>';
+  }
+
+  /* ---------------- mesa posta (pratos da home) ---------------- */
+  // posições na toalha (centro do prato em %), uma lista para tela larga e outra para celular
+  var LUGARES = {
+    largo: [[24, 30], [55, 22], [84, 36], [40, 70], [72, 74], [12, 72]],
+    estreito: [[28, 22], [74, 18], [52, 50], [24, 80], [76, 80], [50, 14]]
+  };
+  var GIROS = [-14, 9, -6, 12, -10, 7];
+  function mesa() {
+    var el = $('#mesa-pratos'); if (!el) return [];
+    var lista = YJ.cardapio().filter(function (i) { return i.destaque && i.foto; }).slice(0, 6);
     el.innerHTML = lista.map(function (i, n) {
-      return '<article class="prato-linha surge"><div class="arco"><img src="fotos/' + i.foto + '" alt="' + esc(i.nome) + ', foto do restaurante" loading="lazy"></div>' +
-        '<div><span class="num">' + String(n + 1).padStart(2, '0') + '</span><h3>' + esc(i.nome) + (i.disponivel === false ? ' <span class="tag-hoje" style="font-size:14px">hoje não tem</span>' : '') + '</h3>' +
-        (i.frase ? '<p class="frase">' + esc(i.frase) + '</p>' : '') + '<p>' + esc(i.desc) + '</p></div></article>';
+      return '<figure class="pp" data-n="' + n + '"><span class="pp-guard" aria-hidden="true"></span><span class="pp-prato"><img src="fotos/' + i.foto + '" alt="' + esc(i.nome) + ', foto do restaurante"' + (n > 1 ? ' loading="lazy"' : '') + '></span>' +
+        '<figcaption class="pp-nome">' + esc(i.nome) + '</figcaption></figure>';
     }).join('');
+    var ul = $('#mesa-lista');
+    if (ul) ul.innerHTML = lista.map(function (i) {
+      return '<li><b>' + esc(i.nome) + (i.disponivel === false ? ' <span class="tag-hoje">hoje não tem</span>' : '') + '</b>' + (i.frase ? '<span class="frase">' + esc(i.frase) + '</span>' : '') + '<span>' + esc(i.desc) + '</span></li>';
+    }).join('');
+    function posiciona() {
+      var tab = window.innerWidth < 861 ? LUGARES.estreito : LUGARES.largo;
+      $$('.pp', el).forEach(function (f, n) { var l = tab[n % tab.length]; f.style.left = l[0] + '%'; f.style.top = l[1] + '%'; });
+    }
+    posiciona();
+    window.addEventListener('resize', posiciona);
+    return lista;
   }
 
   /* ---------------- cardápio ---------------- */
@@ -125,60 +150,109 @@
       return '<section class="cat" id="' + c.id + '"><header><h2>' + c.nome + '</h2><p>' + esc(c.nota) + '</p></header>' +
         lista.map(function (i) {
           var p = YJ.reais(i.preco);
-          return '<article class="item surge' + (i.disponivel === false ? ' esgotado' : '') + '"><div class="mini-arco">' + (i.foto ? '<img src="fotos/' + i.foto + '" alt="" loading="lazy">' : PEIXE_SVG) + '</div>' +
+          return '<article class="item' + (i.disponivel === false ? ' esgotado' : '') + '"><div class="mini-arco">' + (i.foto ? '<img src="fotos/' + i.foto + '" alt="" loading="lazy">' : PEIXE_SVG) + '</div>' +
             '<div><h3>' + esc(i.nome) + (i.disponivel === false ? '<span class="tag-hoje">hoje não tem</span>' : '') + '</h3>' + (i.frase ? '<p class="frase">' + esc(i.frase) + '</p>' : '') + '<p>' + esc(i.desc) + '</p></div>' +
             (p ? '<div class="preco">' + p + '</div>' : '<div class="preco consulte">preço no salão</div>') + '</article>';
         }).join('') + '</section>';
     }).join('');
   }
 
-  /* ---------------- rolagem ---------------- */
-  function rolagem() {
+  /* ---------------- cenas de rolagem (GSAP + ScrollTrigger) ---------------- */
+  // Sem GSAP ou com prefers-reduced-motion: tira a classe "cena" e tudo fica parado, na versão estática.
+  function cenas(pratos) {
+    var raiz = document.documentElement;
     var reduz = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (ents) {
-      ents.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        e.target.classList.add('visto'); io.unobserve(e.target);
-        if (e.target.hasAttribute('data-conta')) conta(e.target);
-      });
-    }, { threshold: .18 }) : null;
-    $$('.surge, .mar-linha, [data-conta]').forEach(function (el) { if (io && !reduz) io.observe(el); else el.classList.add('visto'); });
+    if (reduz || !window.gsap || !window.ScrollTrigger) { raiz.classList.remove('cena'); return; }
+    if (!raiz.classList.contains('cena')) raiz.classList.add('cena');
+    gsap.registerPlugin(ScrollTrigger);
+    var lim = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
+    var sai = function (k) { return 1 - Math.pow(1 - k, 3); };
 
-    function conta(el) {
-      var alvo = +el.getAttribute('data-conta'), alvoEl = el.firstChild, t0 = null;
-      function passo(t) { if (!t0) t0 = t; var k = Math.min(1, (t - t0) / 1600); alvoEl.nodeValue = String(Math.round(alvo * (1 - Math.pow(1 - k, 3)))); if (k < 1) requestAnimationFrame(passo); }
-      if (!reduz) requestAnimationFrame(passo);
+    /* A maré sobe: 0–68% da rolagem a água sobe e o número conta 0→52; 66–88% o salão aparece. */
+    var mare = $('.mare');
+    if (mare) {
+      var nums = $$('.mare-num', mare), claro = $('.mare-claro', mare), frente = $('.agua-frente', mare), tras = $('.agua-tras', mare),
+        salao = $('.mare-salao', mare), dica = $('.mare-dica', mare), ultimo = -1;
+      var pinta = function (p) {
+        var k = lim(p / 0.68), nivel = 104 - sai(k) * 108;          // topo da água em % da altura do palco
+        var nTras = nivel - 6;
+        frente.style.transform = 'translate3d(0,' + nivel.toFixed(2) + '%,0)';
+        tras.style.transform = 'translate3d(0,' + nTras.toFixed(2) + '%,0)';
+        claro.style.clipPath = 'inset(' + Math.max(0, nTras + 2).toFixed(2) + '% 0 0 0)';
+        var n = Math.round(52 * sai(k));
+        if (n !== ultimo) { ultimo = n; nums.forEach(function (e) { e.textContent = n; }); }
+        var s = sai(lim((p - 0.66) / 0.22));
+        salao.style.clipPath = 'inset(' + ((1 - s) * 100).toFixed(2) + '% 0 0 0)';
+        salao.style.setProperty('--zoom', (1.12 - 0.12 * s).toFixed(3));
+        salao.classList.toggle('chegou', s > 0.92);
+        if (dica) dica.style.opacity = String(1 - lim(p / 0.08));
+      };
+      pinta(0);
+      ScrollTrigger.create({ trigger: mare, start: 'top top', end: 'bottom bottom', onUpdate: function (st) { pinta(st.progress); }, onRefresh: function (st) { pinta(st.progress); } });
     }
 
-    var desl = $$('[data-desliza]');
-    if (!desl.length || reduz) return;
-    var pend = false;
-    function move() {
-      pend = false;
-      var vh = window.innerHeight;
-      desl.forEach(function (el) {
-        var r = el.parentElement.getBoundingClientRect();
-        if (r.bottom < -200 || r.top > vh + 200) return;
-        var prog = (vh - r.top) / (vh + r.height);           // 0 → 1 enquanto atravessa a tela
-        var vel = parseFloat(el.getAttribute('data-desliza')) || 1;
-        var larg = Math.max(0, el.scrollWidth - el.parentElement.clientWidth);
-        var x = vel > 0 ? -prog * larg * Math.min(1, vel) : -(1 - prog) * larg * Math.min(1, -vel);
-        el.style.transform = 'translate3d(' + x.toFixed(1) + 'px,0,0)';
-      });
+    /* A mesa posta: cada prato desce na toalha numa fatia da rolagem; a legenda mostra o último colocado. */
+    var mesaEl = $('.mesa');
+    if (mesaEl && pratos && pratos.length) {
+      var figs = $$('.pp', mesaEl), nomeEl = $('.mesa-nome', mesaEl), fraseEl = $('.mesa-frase', mesaEl), leg = $('.mesa-legenda', mesaEl),
+        total = figs.length, atual = -2;
+      var poe = function (p) {
+        var vez = -1;
+        figs.forEach(function (f, n) {
+          var ini = n / total * 0.82, k = sai(lim((p - ini) / (0.82 / total * 0.75))), g = GIROS[n % GIROS.length];
+          f.style.opacity = k.toFixed(3);
+          f.style.transform = 'translate(-50%,-50%) translate3d(0,' + ((1 - k) * -70).toFixed(1) + 'px,0) scale(' + (1.35 - 0.35 * k).toFixed(3) + ') rotate(' + ((1 - k) * g * 2 + g * 0.15).toFixed(2) + 'deg)';
+          f.classList.toggle('posto', k > 0.98);
+          if (k > 0.6) vez = n;
+        });
+        if (vez !== atual) {
+          atual = vez;
+          leg.classList.remove('troca'); void leg.offsetWidth; leg.classList.add('troca');
+          if (vez < 0) { nomeEl.textContent = 'Role a tela: a mesa vai sendo posta.'; fraseEl.textContent = ''; }
+          else {
+            var i = pratos[vez];
+            nomeEl.textContent = i.nome + (i.disponivel === false ? ' · hoje não tem' : '');
+            fraseEl.textContent = i.frase || i.desc;
+          }
+        }
+      };
+      poe(0);
+      ScrollTrigger.create({ trigger: mesaEl, start: 'top top', end: 'bottom bottom', onUpdate: function (st) { poe(st.progress); }, onRefresh: function (st) { poe(st.progress); } });
     }
-    window.addEventListener('scroll', function () { if (!pend) { pend = true; requestAnimationFrame(move); } }, { passive: true });
-    window.addEventListener('resize', move);
-    move();
+
+    /* Crachá de VISITANTE descendo pendurado no cordão. */
+    var mm = gsap.matchMedia();
+    $$('.pendurado').forEach(function (pend) {
+      var modo = pend.getAttribute('data-desce');
+      var altura = function () { return -Math.round(pend.offsetHeight * 0.85); };
+      if (modo === 'rolagem') {
+        // na home desce com a rolagem em qualquer tela (no celular o crachá vem antes do texto)
+        gsap.set(pend, { rotation: -7 });
+        var tl = gsap.timeline({ scrollTrigger: { trigger: pend.closest('section'), start: 'top 90%', end: 'top 5%', scrub: 0.6, invalidateOnRefresh: true } });
+        tl.fromTo(pend, { y: altura }, { y: 0, ease: 'power2.out', duration: 1 }, 0)
+          .to(pend, { keyframes: { rotation: [-7, 5, -2.5, 1, 0], easeEach: 'sine.inOut' }, ease: 'none', duration: 1 }, 0);
+      } else {
+        // na página do Centro de Convenções ele já está no alto: cai ao abrir, só em tela larga
+        mm.add('(min-width: 861px)', function () {
+          gsap.from(pend, { y: altura, duration: 1.1, ease: 'power3.out', delay: 0.2 });
+          gsap.set(pend, { rotation: -8 });
+          gsap.to(pend, { keyframes: { rotation: [-8, 6, -3, 1.2, 0], easeEach: 'sine.inOut' }, duration: 2.2, ease: 'none', delay: 0.2 });
+        });
+      }
+    });
+
+    raiz.classList.add('cena-ok');
+    window.addEventListener('load', function () { ScrollTrigger.refresh(); });
   }
 
   topo();
   rodape();
-  pratosHome($('#lista-pratos'));
+  var pratos = mesa();
   cardapio($('#cardapio'));
   agenda($('#agenda-curta'), 3);
   agenda($('#agenda-toda'));
   $$('[data-onda]').forEach(function (el) { el.innerHTML = onda(+el.getAttribute('data-onda') || 12); });
-  $$('.mar-linha').forEach(function (el) { el.insertAdjacentHTML('beforeend', onda(+el.getAttribute('data-cristas') || 9)); });
+  $$('[data-crista]').forEach(function (el) { el.innerHTML = crista(el.getAttribute('data-crista') === 'tras' ? 7 : 9); });
   montarReserva($('#form-reserva'), document.body.getAttribute('data-tipo-reserva'));
-  rolagem();
+  cenas(pratos);
 })();
